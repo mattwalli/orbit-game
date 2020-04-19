@@ -2,11 +2,13 @@
 ## A quick and fun 2D game to brush up on my C skills
 Launch a satellite into orbit on a single stage rocket.\
 Rocket fuel is limited, satellite fuel is not.\
-Rocket can not be shut down. Staging is automatic.\
+Rocket can not be shut down. Payload deployment is automatic.\
 Atmosphere is non-existent. 2-body gravity simulation.
 ### Built using:
-- C/C++
-- SDL 2.0
+- GCC
+- SDL2
+
+(Only tested to compile on macOS 10.14.6)
 ### Controls:
 ```
 Light Rocket Engine   - Space
