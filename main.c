@@ -5,28 +5,31 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 800;
+
+void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double scale, double angle );
+
 // Main function handles creation of window, loading sprites, event capture, and rendering.
 // I am new to SDL2. This code is hobbled together from multiple tutorials.
 // https://lazyfoo.net/tutorials/SDL/ and http://www.programmersranch.com/p/sdl2-tutorials.html
 
 int main(void)
 {
-    const int SCREEN_WIDTH = 800;
-    const int SCREEN_HEIGHT = 800;
     const int NUM_SPRITES = 4;
     const char* const SPRITE_FILES[] = {
-        "fire.png",
+        "earth.png",
         "rocket.png",
         "satellite.png",
-        "earth.png"
+        "fire.png"
     };
+    enum sprite_name { EARTH, ROCKET, SATELLITE, FIRE };
 
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     SDL_Surface* image = NULL;
-    SDL_Texture* texture = NULL;
-
     SDL_Texture* sprites[NUM_SPRITES] = { NULL };
+    SDL_Texture* text_display = NULL;
 
     //Initialize SDL
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -87,21 +90,34 @@ int main(void)
                     }
                 }
 
-                //Decorate the surface
-                SDL_RenderCopy(renderer, sprites[3], NULL, NULL);
+                //Place sprites
+                place_sprite(renderer, sprites[EARTH], 0.0, 0.0, 0.4, 0.0);
+
+                //Update screen
                 SDL_RenderPresent(renderer);
-            
-                //Update the surface
-                SDL_UpdateWindowSurface( window );
             }
         }
     }
     //Cleanup
-    SDL_DestroyTexture( texture );
+    for( int i = 0; i < NUM_SPRITES; i++ )
+    {
+        SDL_DestroyTexture( sprites[i] );
+    }
+    SDL_DestroyTexture( text_display );
     SDL_DestroyRenderer( renderer );
     SDL_DestroyWindow( window );
     IMG_Quit();
     SDL_Quit();
 
     return 0;
+}
+
+// Send given sprite to renderer with screen relative floating point coordinates
+
+void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double scale, double angle )
+{
+    double f_screen_size = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 2.0) : (SCREEN_HEIGHT / 2.0);
+    SDL_Rect dstrect = { (int)( f_screen_size * (1.0 + x - scale) ), (int)( f_screen_size * (1.0 + y - scale) ),
+        (int)( f_screen_size * 2.0 * scale ), (int)( f_screen_size * 2.0 * scale ) };
+    SDL_RenderCopyEx(renderer, sprite, NULL, &dstrect, angle, NULL, SDL_FLIP_NONE);
 }
