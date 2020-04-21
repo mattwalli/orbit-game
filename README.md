@@ -3,7 +3,7 @@
 Launch a satellite into orbit on a single stage rocket.\
 Rocket fuel is limited, satellite fuel is not.\
 Rocket can not be shut down. Payload deployment is automatic.\
-Atmosphere is non-existent. 2-body gravity simulation.
+Atmosphere is non-existent. Central-force gravity simulation.
 ### Built using:
 - GCC
 - SDL2
