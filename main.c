@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 800;
 
-void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double scale, double angle );
+void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double angle, double scale );
 
 // Main function handles creation of window, loading sprites, event capture, and rendering.
 // I am new to SDL2. This code is hobbled together from multiple tutorials.
@@ -18,10 +17,10 @@ int main(void)
 {
     const int NUM_SPRITES = 4;
     const char* const SPRITE_FILES[] = {
-        "earth.png",
-        "rocket.png",
-        "satellite.png",
-        "fire.png"
+        "img/earth.png",
+        "img/rocket.png",
+        "img/satellite.png",
+        "img/fire.png"
     };
     enum sprite_name { EARTH, ROCKET, SATELLITE, FIRE };
 
@@ -91,7 +90,7 @@ int main(void)
                 }
 
                 //Place sprites
-                place_sprite(renderer, sprites[EARTH], 0.0, 0.0, 0.4, 0.0);
+                place_sprite(renderer, sprites[EARTH], 0.0, 0.0, 0.0, 0.4);
 
                 //Update screen
                 SDL_RenderPresent(renderer);
@@ -114,7 +113,7 @@ int main(void)
 
 // Send given sprite to renderer with screen relative floating point coordinates
 
-void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double scale, double angle )
+void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double angle, double scale )
 {
     double f_screen_size = (SCREEN_WIDTH < SCREEN_HEIGHT) ? (SCREEN_WIDTH / 2.0) : (SCREEN_HEIGHT / 2.0);
     SDL_Rect dstrect = { (int)( f_screen_size * (1.0 + x - scale) ), (int)( f_screen_size * (1.0 + y - scale) ),
