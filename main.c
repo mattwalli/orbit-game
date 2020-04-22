@@ -134,6 +134,7 @@ int main(void)
 
                 //Update screen
                 SDL_RenderPresent(renderer);
+                SDL_RenderClear(renderer);
             }
         }
     }
