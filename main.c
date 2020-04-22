@@ -59,7 +59,7 @@ int main(void)
             }
 
             //Load sprites
-            renderer = SDL_CreateRenderer( window, -1, 0 );
+            renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_PRESENTVSYNC );
             for( int i = 0; i < NUM_SPRITES; i++ )
             {
                 image = IMG_Load( SPRITE_FILES[i] );
