@@ -7,6 +7,11 @@
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 800;
 
+struct key_states
+{
+    bool space, left, right, enter;
+};
+
 void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double y, double angle, double scale );
 
 // Main function handles creation of window, loading sprites, event capture, and rendering.
@@ -15,6 +20,8 @@ void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double
 
 int main(void)
 {
+    struct key_states user_keys = { false, false, false, false };
+
     const int NUM_SPRITES = 4;
     const char* const SPRITE_FILES[] = {
         "img/earth.png",
@@ -86,11 +93,44 @@ int main(void)
                     case SDL_QUIT: //User requested quit
                         quit = true;
                         break;
+                    case SDL_KEYDOWN: //Key state changes
+                    case SDL_KEYUP:
+                        if( !event.key.repeat ) //Filter out key hold repeats
+                        {
+                            switch( event.key.keysym.sym ) //Set new key state in struct
+                            {
+                            case SDLK_SPACE:
+                                user_keys.space = event.key.state;
+                                break;
+                            case SDLK_LEFT:
+                                user_keys.left = event.key.state;
+                                break;
+                            case SDLK_RIGHT:
+                                user_keys.right = event.key.state;
+                                break;
+                            case SDLK_RETURN:
+                            case SDLK_RETURN2: //Either enter key
+                                user_keys.enter = event.key.state;
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
                     }
                 }
 
                 //Place sprites
-                place_sprite(renderer, sprites[EARTH], 0.0, 0.0, 0.0, 0.4);
+                if( user_keys.space )
+                {
+                    place_sprite(renderer, sprites[EARTH], 0.3, 0.0, 0.0, 0.4);
+                }
+                else
+                {
+                    place_sprite(renderer, sprites[EARTH], 0.0, 0.0, 0.0, 0.4);
+                }
 
                 //Update screen
                 SDL_RenderPresent(renderer);
