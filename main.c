@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "game.h"
+
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 800;
 
@@ -20,16 +22,18 @@ void place_sprite( SDL_Renderer* renderer, SDL_Texture* sprite, double x, double
 
 int main(void)
 {
-    struct key_states user_keys = { false, false, false, false };
-
-    const int NUM_SPRITES = 4;
+    enum sprite_names { EARTH, ROCKET, SATELLITE, FIRE };
     const char* const SPRITE_FILES[] = {
         "img/earth.png",
         "img/rocket.png",
         "img/satellite.png",
         "img/fire.png"
     };
-    enum sprite_name { EARTH, ROCKET, SATELLITE, FIRE };
+    const int NUM_SPRITES = 4;
+
+    coord_t* sprite_coord[NUM_SPRITES];
+    struct key_states user_keys = { false, false, false, false };
+
     double dx = 0.0;
     double ds = 0.6;
 
