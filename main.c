@@ -30,6 +30,8 @@ int main(void)
         "img/fire.png"
     };
     enum sprite_name { EARTH, ROCKET, SATELLITE, FIRE };
+    double dx = 0.0;
+    double ds = 0.6;
 
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
@@ -122,19 +124,32 @@ int main(void)
                     }
                 }
 
+                //Update game simulation
+
                 //Place sprites
                 if( user_keys.space )
                 {
-                    place_sprite(renderer, sprites[EARTH], 0.3, 0.0, 0.0, 0.4);
+                    ds -= 0.01;
                 }
-                else
+                if( user_keys.left )
                 {
-                    place_sprite(renderer, sprites[EARTH], 0.0, 0.0, 0.0, 0.4);
+                    dx -= 0.05;
                 }
+                if( user_keys.right )
+                {
+                    dx += 0.05;
+                }
+                if( user_keys.enter )
+                {
+                    dx = 0.0;
+                    ds = 0.6;
+                    user_keys.enter = false;
+                }
+                place_sprite( renderer, sprites[EARTH], dx, 0.0, 0.0, ds );
 
                 //Update screen
-                SDL_RenderPresent(renderer);
-                SDL_RenderClear(renderer);
+                SDL_RenderPresent( renderer );
+                SDL_RenderClear( renderer );
             }
         }
     }
