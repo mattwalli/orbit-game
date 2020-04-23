@@ -36,6 +36,8 @@ int main(void)
 
     double dx = 0.0;
     double ds = 0.6;
+    int user_pitch;
+    bool user_burn;
 
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
@@ -87,6 +89,9 @@ int main(void)
             //Event handler
             SDL_Event event;
 
+            //Start game sim
+            reset_sim( SDL_GetTicks() );
+
             //Main loop
             bool quit = false;
             while( !quit )
@@ -128,7 +133,35 @@ int main(void)
                     }
                 }
 
+                //Process user input
+                if( user_keys.enter )
+                {
+                    dx = 0.0;
+                    ds = 0.6;
+                    reset_sim( SDL_GetTicks() );
+                    user_keys.enter = false;
+                }
+                if( user_keys.space )
+                {
+                    user_burn = true;
+                }
+                else
+                {
+                    user_burn = false;
+                }
+                user_pitch = 0;
+                if( user_keys.left )
+                {
+                    user_pitch -= 1;
+                }
+                if( user_keys.right )
+                {
+                    user_pitch += 1;
+                }
+
                 //Update game simulation
+                update_sim( SDL_GetTicks(), user_pitch, user_burn );
+
 
                 //Place sprites
                 if( user_keys.space )
@@ -143,12 +176,7 @@ int main(void)
                 {
                     dx += 0.05;
                 }
-                if( user_keys.enter )
-                {
-                    dx = 0.0;
-                    ds = 0.6;
-                    user_keys.enter = false;
-                }
+                
                 place_sprite( renderer, sprites[EARTH], dx, 0.0, 0.0, ds );
 
                 //Update screen
