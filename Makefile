@@ -8,3 +8,6 @@ main.o: main.c game.h
 
 game.o: game.c game.h
 	gcc -c game.c
+
+clean:
+	rm -f *.o orbit
